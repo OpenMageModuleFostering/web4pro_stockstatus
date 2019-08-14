@@ -45,7 +45,7 @@ class Web4pro_Stockstatus_Model_Observer
         }
         $transport = $observer->getEvent()->getTransport();
         $block = new Web4pro_Stockstatus_Block_Stockstatus();
-        if (isset($stockstatuses['isProductView']) && $stockstatuses['isProductView'] == 1){
+        if ($stockstatuses['isProductView'] == 1){
             $stockstatus = $stockstatuses['stockstatus'];
             $block->replaceStockStatus($transport['html'], $stockstatus);
         } else {

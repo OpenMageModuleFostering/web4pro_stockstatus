@@ -55,7 +55,8 @@ class Web4pro_Stockstatus_Block_Stockstatus extends Mage_Core_Block_Text
         $script = '<script type="text/javascript">
         //<![CDATA[
             document.observe("dom:loaded", function() {
-                $$("p.availability").first().update("'. $stockstatus .'")
+                $$("p.availability").first().update("'. $stockstatus .'");
+                Product.Config.standartStockStatus = "'.$stockstatus.'";    
             });
         //]]>
         </script>

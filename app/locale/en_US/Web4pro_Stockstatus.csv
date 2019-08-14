@@ -1,19 +1,18 @@
-"",""
-"Web4pro","Web4pro"
-"General Options","General Options"
-"Show Stock Status When Out Of Stock?","Show Stock Status When Out Of Stock?"
-"Do you want to show custom stock status instead of 'Out of stock' when product is not in stock?","Do you want to show custom stock status instead of 'Out of stock' when product is not in stock?"
-"Display Custom Stock Status On Product List Page","Display Custom Stock Status On Product List Page"
-"Display Custom Stock Status in Shopping Cart","Display Custom Stock Status in Shopping Cart"
-"Will display custom stock status for items in shopping cart.","Will display custom stock status for items in shopping cart."
-"Show Stock Level?","Show Stock Level?"
-"Show the actual quantity in stock?","Show the actual quantity in stock?"
-"Availability:","Availability:"
-"Availability: ","Availability: "
-"In stock","In stock"
-"Out of stock","Out of stock"
-"%s in stock","%s in stock"
-"Product Name","Product Name"
-"Price","Price"
-"Qty","Qty"
-"No options of this product are available.","No options of this product are available."
+,
+Web4pro,Web4pro
+General Options,General Options
+Show Stock Status When Out Of Stock?,Show Stock Status When Out Of Stock?
+Do you want to show custom stock status instead of 'Out of stock' when product is not in stock?,Do you want to show custom stock status instead of 'Out of stock' when product is not in stock?
+Display Custom Stock Status On Product List Page,Display Custom Stock Status On Product List Page
+Display Custom Stock Status in Shopping Cart,Display Custom Stock Status in Shopping Cart
+Will display custom stock status for items in shopping cart.,Will display custom stock status for items in shopping cart.
+Show Stock Level?,Show Stock Level?
+Show the actual quantity in stock?,Show the actual quantity in stock?
+Availability:,Availability:
+In stock,In stock
+Out of stock,Out of stock
+%s in stock,%s in stock
+Product Name,Product Name
+Price,Price
+Qty,Qty
+No options of this product are available.,No options of this product are available.

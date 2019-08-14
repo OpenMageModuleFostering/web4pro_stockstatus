@@ -17,7 +17,6 @@
  */
 class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Get default stock status of product
      * @param $product
@@ -43,10 +42,22 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCustomStockStatus($product)
     {
         $customStockStatus = '';
-        if ($product->isAvailable() || $this->isCustomStockStatusOnOutOfStock()){
+        if (($product->isAvailable() || $this->isCustomStockStatusOnOutOfStock()) && $this->checkNumberProductsForCustomStatus($product)) {
             $customStockStatus = $product->getAttributeText('custom_stockstatus');
         }
         return $customStockStatus;
+    }
+    
+    /**
+     * check number of products for custom stock status (count_products field)
+     * @param object $product
+     * @return bool
+     */
+    public function checkNumberProductsForCustomStatus($product){
+        $count = $product->getData('count_products');
+        if(!in_array($product->getTypeID(), $this->getProductTypesForCount())) return true;
+        $strockQty = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($product)->getQty();
+        return $count <= $strockQty;
     }
 
 
@@ -59,11 +70,13 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $defaultStockStatus = $this->getDefaultStockStatus($product);
         $customStockStatus = $this->getCustomStockStatus($product);
-        if ($this->isShowStockLevel() && $product->getStockItem()->getQty()) {
+        if ($this->isShowStockLevel() && $product->getStockItem()->getQty() && in_array($product->getTypeID(), $this->getProductTypesForCount())) {
             $levelStockStatus = $this->__('%s in stock', (int)$product->getStockItem()->getQty());
             return $levelStockStatus . ' ' . $customStockStatus;
         }
-        if ($this->isDefaultStockStatusHidden($product)){
+        if(!strlen($customStockStatus)){
+            return $defaultStockStatus;
+        }else if ($this->isDefaultStockStatusHidden($product)){
             return $customStockStatus;
         } else {
             return $defaultStockStatus . ' ' . $customStockStatus;
@@ -174,5 +187,25 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $images = Mage::getResourceModel('eav/entity_attribute_option')->getAttributeOptionImages();
         return $images;
+    }
+    
+    /**
+     * get product types without count products field
+     * 
+     * @return array
+     */
+    public function getProductTypesForCount(){
+        return array(Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
+    }
+    
+    /**
+     * return custom stock status
+     * 
+     * @param unknown $product
+     * @return string
+     */
+    public function getStockStatus($product){
+        $helper = Mage::helper("web4pro_stockstatus");
+        return $helper->__('Availability:') ." ".$helper->getNewStockStatus($product);
     }
 }
