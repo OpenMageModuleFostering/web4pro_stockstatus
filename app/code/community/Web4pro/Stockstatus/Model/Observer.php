@@ -71,6 +71,8 @@ class Web4pro_Stockstatus_Model_Observer
                 break;
 
             case $block instanceof Mage_Catalog_Block_Product_List:
+                $collection = $block->getLoadedProductCollection();
+                Mage::getSingleton('cataloginventory/stock')->addItemsToProducts($collection);
                 if ($this->_helper->isCustomStockStatusOnProductListPage()){
                     foreach ($block->getLoadedProductCollection() as $item){
                         $stockstatuses[] = $this->_helper->getNewStockStatus($item);

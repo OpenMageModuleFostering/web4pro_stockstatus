@@ -57,21 +57,17 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getNewStockStatus($product)
     {
-        $newStockStatus = $this->getDefaultStockStatus($product);
+        $defaultStockStatus = $this->getDefaultStockStatus($product);
         $customStockStatus = $this->getCustomStockStatus($product);
         if ($this->isShowStockLevel() && $product->getStockItem()->getQty()) {
-            $newStockStatus = $this->__('%s in stock', (int)$product->getStockItem()->getQty());
-            return $newStockStatus;
-        }
-        if (empty($customStockStatus)){
-            return $newStockStatus;
+            $levelStockStatus = $this->__('%s in stock', (int)$product->getStockItem()->getQty());
+            return $levelStockStatus . ' ' . $customStockStatus;
         }
         if ($this->isDefaultStockStatusHidden($product)){
-            $newStockStatus = $customStockStatus;
+            return $customStockStatus;
         } else {
-            $newStockStatus = $newStockStatus . ' ' . $customStockStatus;
+            return $defaultStockStatus . ' ' . $customStockStatus;
         }
-        return $newStockStatus;
     }
 
 
