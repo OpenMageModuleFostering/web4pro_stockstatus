@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * WEB4PRO - Creating profitable online stores
+ *
+ * @author WEB4PRO <srepin@corp.web4pro.com.ua>
+ * @category  WEB4PRO
+ * @package   Web4pro_Stockstatus
+ * @copyright Copyright (c) 2015 WEB4PRO (http://www.web4pro.net)
+ * @license   http://www.web4pro.net/license.txt
+ */
+-->
+<config>
+    <modules>
+        <Web4pro_Stockstatus>
+            <version>1.0.0</version>
+        </Web4pro_Stockstatus>
+    </modules>
+    <global>
+        <helpers>
+            <web4pro_stockstatus>
+                <class>Web4pro_Stockstatus_Helper</class>
+            </web4pro_stockstatus>
+        </helpers>
+        <models>
+            <web4pro_stockstatus>
+                <class>Web4pro_Stockstatus_Model</class>
+            </web4pro_stockstatus>
+        </models>
+        <blocks>
+            <web4pro_stockstatus>
+                <class>Web4pro_Stockstatus_Block</class>
+            </web4pro_stockstatus>
+            <catalog>
+                <rewrite>
+                    <product_view_type_configurable>Web4pro_Stockstatus_Block_Catalog_Product_View_Type_Configurable</product_view_type_configurable>
+                </rewrite>
+            </catalog>
+            <bundle>
+                <rewrite>
+                    <catalog_product_view_type_bundle_option_radio>Web4pro_Stockstatus_Block_Catalog_Product_View_Type_Bundle_Option_Radio</catalog_product_view_type_bundle_option_radio>
+                    <catalog_product_view_type_bundle_option_multi>Web4pro_Stockstatus_Block_Catalog_Product_View_Type_Bundle_Option_Multi</catalog_product_view_type_bundle_option_multi>
+                    <catalog_product_view_type_bundle_option_checkbox>Web4pro_Stockstatus_Block_Catalog_Product_View_Type_Bundle_Option_Checkbox</catalog_product_view_type_bundle_option_checkbox>
+                    <catalog_product_view_type_bundle_option_select>Web4pro_Stockstatus_Block_Catalog_Product_View_Type_Bundle_Option_Select</catalog_product_view_type_bundle_option_select>
+                </rewrite>
+            </bundle>
+        </blocks>
+        <resources>
+            <web4pro_stockstatus_setup>
+                <setup>
+                    <module>Web4pro_Stockstatus</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </web4pro_stockstatus_setup>
+            <web4pro_stockstatus_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </web4pro_stockstatus_write>
+            <web4pro_stockstatus_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </web4pro_stockstatus_read>
+        </resources>
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <custom_stockstatus />
+                        <hide_default_stockstatus />
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
+        <events>
+            <sales_quote_item_set_product>
+                <observers>
+                    <add_custom_stockstatus_to_quote>
+                        <class>web4pro_stockstatus/observer</class>
+                        <method>setStockStatusAttribute</method>
+                    </add_custom_stockstatus_to_quote>
+                </observers>
+            </sales_quote_item_set_product>
+        </events>
+    </global>
+    <frontend>
+        <routers>
+            <web4pro_stockstatus>
+                <use>standard</use>
+                <args>
+                    <module>Web4pro_Stockstatus</module>
+                    <frontName>web4pro_stockstatus</frontName>
+                </args>
+            </web4pro_stockstatus>
+        </routers>
+        <layout>
+            <updates>
+                <web4pro_stockstatus>
+                    <file>web4pro_stockstatus.xml</file>
+                </web4pro_stockstatus>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Web4pro_Stockstatus>
+                    <files>
+                        <default>Web4pro_Stockstatus.csv</default>
+                    </files>
+                </Web4pro_Stockstatus>
+            </modules>
+        </translate>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <update_stock_status>
+                        <class>web4pro_stockstatus/observer</class>
+                        <method>updateStockStatus</method>
+                    </update_stock_status>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
+    </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <web4pro_stockstatus>
+                    <file>web4pro_stockstatus.xml</file>
+                </web4pro_stockstatus>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Web4pro_Stockstatus>
+                    <files>
+                        <default>Web4pro_Stockstatus.csv</default>
+                    </files>
+                </Web4pro_Stockstatus>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <web4pro_stockstatus translate="title" module="web4pro_stockstatus">
+                                            <title>Custom Stock Status Section</title>
+                                            <sort_order>50</sort_order>
+                                        </web4pro_stockstatus>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>
