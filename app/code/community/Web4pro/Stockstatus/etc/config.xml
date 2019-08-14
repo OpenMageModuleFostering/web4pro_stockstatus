@@ -13,7 +13,7 @@
 <config>
     <modules>
         <Web4pro_Stockstatus>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </Web4pro_Stockstatus>
     </modules>
     <global>
@@ -21,13 +21,38 @@
             <web4pro_stockstatus>
                 <class>Web4pro_Stockstatus_Helper</class>
             </web4pro_stockstatus>
+            <cms>
+                <rewrite>
+                    <wysiwyg_images>Web4pro_Stockstatus_Helper_Cms_Wysiwyg_Images</wysiwyg_images>
+                </rewrite>
+            </cms>
         </helpers>
         <models>
             <web4pro_stockstatus>
                 <class>Web4pro_Stockstatus_Model</class>
             </web4pro_stockstatus>
+            <catalog_resource_eav_mysql4>
+                <rewrite>
+                    <attribute>Web4pro_Stockstatus_Model_Catalog_Resource_Eav_Mysql4_Attribute</attribute>
+                </rewrite>
+            </catalog_resource_eav_mysql4>
+            <eav>
+                <rewrite>
+                    <entity_attribute_source_table>Web4pro_Stockstatus_Model_Eav_Entity_Attribute_Source_Table</entity_attribute_source_table>
+                </rewrite>
+            </eav>
+            <eav_mysql4>
+                <rewrite>
+                    <entity_attribute_option>Web4pro_Stockstatus_Model_Eav_Mysql4_Entity_Attribute_Option</entity_attribute_option>
+                </rewrite>
+            </eav_mysql4>
         </models>
         <blocks>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_attribute_edit_tab_options>Web4pro_Stockstatus_Block_Adminhtml_Catalog_Product_Attribute_Options</catalog_product_attribute_edit_tab_options>
+                </rewrite>
+            </adminhtml>
             <web4pro_stockstatus>
                 <class>Web4pro_Stockstatus_Block</class>
             </web4pro_stockstatus>
@@ -49,6 +74,7 @@
             <web4pro_stockstatus_setup>
                 <setup>
                     <module>Web4pro_Stockstatus</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>
@@ -86,6 +112,17 @@
             </sales_quote_item_set_product>
         </events>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Web4pro_Stockstatus before="Mage_Adminhtml">Web4pro_Stockstatus</Web4pro_Stockstatus>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
     <frontend>
         <routers>
             <web4pro_stockstatus>
@@ -131,6 +168,16 @@
                 </web4pro_stockstatus>
             </updates>
         </layout>
+        <events>
+            <controller_action_layout_generate_blocks_after>>
+                <observers>
+                    <update_layout>
+                        <class>web4pro_stockstatus/observer</class>
+                        <method>updateLayout</method>
+                    </update_layout>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
+        </events>
         <translate>
             <modules>
                 <Web4pro_Stockstatus>

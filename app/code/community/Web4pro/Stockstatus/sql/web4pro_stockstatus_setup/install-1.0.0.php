@@ -16,7 +16,7 @@
  * @author      WEB4PRO <srepin@corp.web4pro.com.ua>
  */
 $this->startSetup();
-$setup = new Mage_Eav_Model_Entity_Setup('core_setup');
+$setup = new Mage_Catalog_Model_Resource_Eav_Mysql4_Setup('core_setup');
 
 $setup->addAttribute('catalog_product', 'custom_stockstatus', array(
     'group'         				=> 'Custom Stock Status',

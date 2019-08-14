@@ -75,7 +75,8 @@ class Web4pro_Stockstatus_Model_Observer
                 Mage::getSingleton('cataloginventory/stock')->addItemsToProducts($collection);
                 if ($this->_helper->isCustomStockStatusOnProductListPage()){
                     foreach ($block->getLoadedProductCollection() as $item){
-                        $stockstatuses[] = $this->_helper->getNewStockStatus($item);
+                        $img = $this->getStockStatusImage($item);
+                        $stockstatuses[] = ($this->_helper->isShowStockImageOnly()) ? $img  : $img . $this->_helper->getNewStockStatus($item);
                     }
                 }
                 break;
@@ -103,5 +104,55 @@ class Web4pro_Stockstatus_Model_Observer
         $product = $observer->getProduct();
         $quoteItem->setCustomStockstatus($product->getCustomStockstatus());
         $quoteItem->setHideDefaultStockstatus($product->getHideDefaultStockstatus());
+    }
+
+
+    /**
+     * Get product custom stockstatus image
+     * @param $product
+     * @return string
+     * @access public
+     * @author WEB4PRO <srepin@corp.web4pro.com.ua>
+     */
+    public function getStockStatusImage($product)
+    {
+        $helper = Mage::helper('web4pro_stockstatus');
+        if (!$helper->isShowStockImage()){
+            return false;
+        }
+        $img = '';
+        $custom_stockstatus = $product->getData('custom_stockstatus');
+        if($custom_stockstatus){
+            $src =  $helper->getAttributeOptionImage($custom_stockstatus);
+            $img = "<img style='display:inline;'  align='top' height=20px src='" . $src . "'> ";
+        }
+        return $img;
+    }
+
+    /**
+     * Add uploader for attribute
+     * @param $observer
+     * @access public
+     * @author WEB4PRO <srepin@corp.web4pro.com.ua>
+     */
+    public function updateLayout($observer)
+    {
+        $action = $observer->getEvent()->getAction();
+        if ($action instanceof Mage_Adminhtml_Catalog_Product_AttributeController && $action->getRequest()->getActionName() == 'edit') {
+            if (Mage::registry('entity_attribute')->getData('attribute_code') !='custom_stockstatus'){
+                return false;
+            }
+            $observer->getLayout()->getBlock('head')
+                ->setCanLoadExtJs(true)
+                ->addJs('mage/adminhtml/variables.js')
+                ->addJs('mage/adminhtml/wysiwyg/widget.js')
+                ->addJs('lib/flex.js')
+                ->addJs('lib/FABridge.js')
+                ->addJs('mage/adminhtml/flexuploader.js')
+                ->addJs('mage/adminhtml/browser.js')
+                ->addJs('prototype/window.js')
+                ->addItem('js_css', 'prototype/windows/themes/default.css')
+                ->addItem('skin_css', 'lib/prototype/windows/themes/magento.css');
+        }
     }
 }

@@ -9,7 +9,7 @@
  * @license   http://www.web4pro.net/license.txt
  */
 /**
- * Attachments default helper
+ * Stockstatus default helper
  *
  * @category    Web4pro
  * @package     Web4pro_Stockstatus
@@ -87,7 +87,7 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isCustomStockStatusOnProductListPage()
     {
-        return Mage::getStoreConfig('web4pro_stockstatus/general/display_at_categoty');
+        return Mage::getStoreConfig('web4pro_stockstatus/general/display_at_category');
     }
 
     /**
@@ -109,12 +109,31 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * is stock qty displayed
+     * Is stock qty displayed
      * @return mixed
      */
     public function isShowStockLevel()
     {
         return Mage::getStoreConfig('web4pro_stockstatus/general/showstocklevel');
+    }
+
+
+    /**
+     * Is show icon
+     * @return mixed
+     */
+    public function isShowStockImage()
+    {
+        return Mage::getStoreConfig('web4pro_stockstatus/general/showimage');
+    }
+
+    /**
+     * Is show icon only
+     * @return mixed
+     */
+    public function isShowStockImageOnly()
+    {
+        return Mage::getStoreConfig('web4pro_stockstatus/general/showimageonly');
     }
 
     /**
@@ -129,5 +148,31 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
             $result = $this->getNewStockStatus($product);
         }
         return $result;
+    }
+
+
+    /**
+     * Generate image url
+     * @param $optionId
+     * @return string
+     */
+    public function getAttributeOptionImage($optionId)
+    {
+        $images = $this->getAttributeOptionImages();
+        $image = array_key_exists($optionId, $images) ? $images[$optionId] : '';
+        if ($image && (strpos($image, 'http') !== 0)) {
+            $image = Mage::getDesign()->getSkinUrl($image);
+        }
+        return $image;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getAttributeOptionImages()
+    {
+        $images = Mage::getResourceModel('eav/entity_attribute_option')->getAttributeOptionImages();
+        return $images;
     }
 }
