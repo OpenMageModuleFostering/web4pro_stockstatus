@@ -28,17 +28,23 @@ class Web4pro_Stockstatus_Block_Catalog_Product_View_Type_Configurable extends M
         $config = parent::getJsonConfig();
         $config = Mage::helper('core')->jsonDecode($config);
         $stockstatuses = array();
-        $helper = Mage::helper('web4pro_stockstatus');
+        $helper   = Mage::helper('web4pro_stockstatus');
         $_product = $this->getProduct();
+        $observer = Mage::getModel('web4pro_stockstatus/observer');
+        $productViewFlag = $helper->isCustomStockStatusOnProductViewPage();
+
         $ids = Mage::getModel('catalog/product_type_configurable')->getChildrenIds($_product->getId());
         $_subproducts = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToFilter('entity_id', $ids)
             ->addAttributeToSelect('*');
+
         foreach ($_subproducts as $product){
             $stockstatuses[$product->getId()]["stockstatus"] = $helper->getNewStockStatus($product);
-            $config['stockstatuses'] = $stockstatuses;
-            $config['availability'] = $helper->__('Availability:');
+            $images[$product->getId()]['stock_image'] = $productViewFlag ? $observer->getStockStatusImage($product) : "";
         }
+        $config['stockstatuses'] = $stockstatuses;
+        $config['stock_images']  = $images;
+        $config['availability']  = $helper->__('Availability:');
         return Mage::helper('core')->jsonEncode($config);
     }
 }

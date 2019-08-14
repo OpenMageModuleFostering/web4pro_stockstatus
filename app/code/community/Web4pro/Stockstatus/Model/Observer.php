@@ -47,7 +47,9 @@ class Web4pro_Stockstatus_Model_Observer
         $block = new Web4pro_Stockstatus_Block_Stockstatus();
         if (isset($stockstatuses['isProductView']) && $stockstatuses['isProductView'] == 1){
             $stockstatus = $stockstatuses['stockstatus'];
-            $block->replaceStockStatus($transport['html'], $stockstatus);
+            $product = $observer->getBlock()->getProduct();
+
+            $block->replaceStockStatus($transport['html'], $stockstatus, $product);
         } else {
             $block->replaceStockStatuses($transport['html'], $stockstatuses);
         }
@@ -124,7 +126,7 @@ class Web4pro_Stockstatus_Model_Observer
         $custom_stockstatus = $product->getData('custom_stockstatus');
         if($custom_stockstatus){
             $src =  $helper->getAttributeOptionImage($custom_stockstatus);
-            $img = "<img style='display:inline;'  align='top' height=20px src='" . $src . "'> ";
+            $img = '<img style="display:inline;" align="top" height="20px" src="' . $src . '" />';
         }
         return $img;
     }

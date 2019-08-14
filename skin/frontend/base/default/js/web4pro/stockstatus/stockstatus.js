@@ -101,8 +101,8 @@ if(Product.ConfigurableSwatches != undefined){
 	    });
 	    var option = (this._F.currentAction == 'over-swatch' || this._F.currentAction == 'out-swatch') ? this._E.optionOver : null; 
 	    var productId = this.getProductByOption(option, arr);
-	    var stockStatus = (checkOptions.size() > 1) && productId ? getFormatStockStatus(Translator.translate(spConfig.config.stockstatuses[productId].stockstatus)): Product.Config.standartStockStatus;
-	    this.setStockStatus( inStock, stockStatus);
+	    var stockStatus = (checkOptions.size() > 1) && productId ? getFormatStockStatus(Translator.translate(spConfig.config.stockstatuses[productId].stockstatus), spConfig.config.stock_images[productId].stock_image): Product.Config.standartStockStatus;
+	    this.setStockStatus( inStock, stockStatus );
 	};
 	
 	Product.ConfigurableSwatches.prototype.setStockStatus = function(inStock, stockStatus) {
@@ -110,7 +110,7 @@ if(Product.ConfigurableSwatches != undefined){
 	        this._E.availability.each(function(el) {
 	            var el = $(el);
 	            el.addClassName('in-stock').removeClassName('out-of-stock');
-	            el.textContent = stockStatus;
+                el.update(stockStatus);
 	        });
 	
 	        this._E.cartBtn.btn.each(function(el, index) {
@@ -143,16 +143,16 @@ if(Product.ConfigurableSwatches != undefined){
 	};
 }
 
-function getFormatStockStatus(status){
+function getFormatStockStatus(status, stockImage){
     var availabilityText = spConfig.config.availability;
-    return status != '' ? availabilityText + ' ' + status : '';
+    return status != '' ? stockImage + availabilityText + ' ' + status : '';
 }
 
 document.observe("dom:loaded", function() {
     $$('.product-options .input-box select').last().observe('change', function () {
     	if(typeof spConfig.getIdOfSelectedProduct() != 'undefined') {
             var productId = spConfig.getIdOfSelectedProduct();
-            var status = getFormatStockStatus(spConfig.config.stockstatuses[productId].stockstatus);
+            var status = getFormatStockStatus(spConfig.config.stockstatuses[productId].stockstatus, spConfig.config.stock_images[productId].stock_image);
             $$('p.availability').invoke('update', status);
         }
     });

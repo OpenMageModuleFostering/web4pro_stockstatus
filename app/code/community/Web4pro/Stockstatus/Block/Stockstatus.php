@@ -49,14 +49,23 @@ class Web4pro_Stockstatus_Block_Stockstatus extends Mage_Core_Block_Text
      * Replace sotck status at product view page
      * @param $transport
      * @param $stockstatus
+     * @param $product
      */
-    public function replaceStockStatus($transport, $stockstatus)
+    public function replaceStockStatus($transport, $stockstatus, $product)
     {
+        $helper = $this->helper('web4pro_stockstatus');
+        $stockImage = '';
+
+        if($helper->isCustomStockStatusOnProductViewPage()){
+            $observer = Mage::getModel('web4pro_stockstatus/observer');
+            $stockImage = $observer->getStockStatusImage($product);
+        }
+
         $script = '<script type="text/javascript">
         //<![CDATA[
             document.observe("dom:loaded", function() {
-                $$("p.availability").first().update("'. $stockstatus .'");
-                Product.Config.standartStockStatus = "'.$stockstatus.'";    
+                $$("p.availability").first().update(\''. $stockImage . $stockstatus .'\');
+                Product.Config.standartStockStatus = \'' . $stockImage . $stockstatus .'\';
             });
         //]]>
         </script>

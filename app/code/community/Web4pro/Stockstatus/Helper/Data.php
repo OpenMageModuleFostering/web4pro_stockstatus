@@ -104,6 +104,15 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Is the custom status allowed at product view page
+     * @return mixed
+     */
+    public function isCustomStockStatusOnProductViewPage()
+    {
+        return Mage::getStoreConfig('web4pro_stockstatus/general/display_at_product_page');
+    }
+
+    /**
      * Is the custom status allowed at page of shoping cart
      * @return mixed
      */
@@ -205,7 +214,26 @@ class Web4pro_Stockstatus_Helper_Data extends Mage_Core_Helper_Abstract
      * @return string
      */
     public function getStockStatus($product){
-        $helper = Mage::helper("web4pro_stockstatus");
-        return $helper->__('Availability:') ." ".$helper->getNewStockStatus($product);
+        return $this->__('Availability:') . " " . $this->getNewStockStatus($product);
+    }
+
+    /**
+     * return custom child stock status
+     *
+     * @param $product
+     * @return string
+     */
+    public function getChildStockStatus($product){
+        if (!$this->isShowStockImage()){
+            return false;
+        }
+        $img = '';
+        $custom_stockstatus = $product->getData('custom_stockstatus');
+        if($custom_stockstatus && $this->isCustomStockStatusOnProductViewPage()){
+            $src =  $this->getAttributeOptionImage($custom_stockstatus);
+            $img = '<img style="display:inline;" align="top" height="20px" src="' . $src . '" />';
+        }
+
+        return $img . $this->__('Availability:') ." ".$this->getNewStockStatus($product);
     }
 }
