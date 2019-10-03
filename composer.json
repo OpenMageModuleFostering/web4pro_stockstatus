@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Web4pro_Stockstatus",
+    "name": "OpenMageModuleFostering\/Web4pro_Stockstatus",
     "type": "magento-module",
     "license": "GPL",
     "homepage": "",
     "description": "Replace default stock statuses with text or configure the number of products available in stock.",
     "authors": [
-    {
-        "name": "Sergey Poprigin",
-        "email": "spoprigin@corp.web4pro.com.ua"
-    }
-],
+        {
+            "name": "Sergey Poprigin",
+            "email": "spoprigin@corp.web4pro.com.ua"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
