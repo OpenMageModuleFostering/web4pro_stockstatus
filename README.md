@@ -1,3 +1,5 @@
+
+
 ## Original Package Description
 
 Replace default stock statuses with text or configure the number of products available in stock.
